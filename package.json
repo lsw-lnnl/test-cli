@@ -1,0 +1,26 @@
+{
+  "name": "component-cli",
+  "version": "1.0.0",
+  "description": "CLI tool to download and install components from git repositories",
+  "main": "dist/cli.js",
+  "bin": {
+    "component-cli": "./dist/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node --experimental-modules dist/cli.js",
+    "debug": "node --inspect-brk dist/cli.js"
+  },
+  "dependencies": {
+    "chalk": "^5.0.0",
+    "commander": "^10.0.0",
+    "fs-extra": "^11.0.0",
+    "simple-git": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^16.11.7",
+    "typescript": "^4.5.2"
+  }
+}
