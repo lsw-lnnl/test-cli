@@ -11,11 +11,12 @@ const program = new Command()
 program
     .command("install <gitUrl> <componentPath> [targetDir]")
     .description("Download and install a component from git repository")
-    .action(async (gitUrl, componentPath, targetDir = "./src/components") => {
+    .option('-b, --branch <branch>', 'Specify git branch', 'master')
+    .action(async (gitUrl, componentPath, targetDir = "./src/components", options) => {
     try {
-        console.log(chalk.blue(`Downloading component from ${gitUrl}...`));
+        console.log(chalk.blue(`Downloading component from ${gitUrl} branch ${options.branch}...`));
         // 下载组件文件
-        const files = await downloadComponent(gitUrl, componentPath);
+        const files = await downloadComponent(gitUrl, componentPath, options.branch);
         // 截取组件目录最后一层目录名称
         const componentPathArr = componentPath.split("/");
         const lastComponentDirName = componentPathArr[componentPathArr.length - 1];

@@ -3,15 +3,14 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import os from 'node:os';
 import { packageJson } from './get-package.js';
-export async function downloadComponent(gitUrl, componentPath) {
+export async function downloadComponent(gitUrl, componentPath, branch = 'master') {
     // Create temp directory using package name
     const tempDir = path.join(os.tmpdir(), `${packageJson.name}-${Date.now()}`);
-    console.log('tempDir', tempDir);
     await fs.ensureDir(tempDir);
     try {
-        // Clone repository
+        // Clone repository with specified branch
         const git = simpleGit();
-        await git.clone(gitUrl, tempDir);
+        await git.clone(gitUrl, tempDir, ['-b', branch, '--single-branch']);
         // Get component files
         const componentDir = path.join(tempDir, componentPath);
         const files = await getComponentFiles(componentDir);
