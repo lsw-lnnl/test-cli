@@ -1,10 +1,10 @@
 {
-  "name": "component-cli",
+  "name": "test-cli",
   "version": "1.0.0",
   "description": "CLI tool to download and install components from git repositories",
   "main": "dist/cli.js",
   "bin": {
-    "component-cli": "./dist/cli.js"
+    "test-cli": "./dist/cli.js"
   },
   "type": "module",
   "scripts": {

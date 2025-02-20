@@ -2,9 +2,10 @@ import { simpleGit } from 'simple-git';
 import fs from 'fs-extra';
 import path from 'node:path';
 import os from 'node:os';
+import { packageJson } from './get-package.js';
 export async function downloadComponent(gitUrl, componentPath) {
-    // Create temp directory
-    const tempDir = path.join(os.tmpdir(), 'component-cli-' + Date.now());
+    // Create temp directory using package name
+    const tempDir = path.join(os.tmpdir(), `${packageJson.name}-${Date.now()}`);
     console.log('tempDir', tempDir);
     await fs.ensureDir(tempDir);
     try {
@@ -15,7 +16,7 @@ export async function downloadComponent(gitUrl, componentPath) {
         const componentDir = path.join(tempDir, componentPath);
         const files = await getComponentFiles(componentDir);
         // Cleanup
-        // await fs.remove(tempDir)
+        await fs.remove(tempDir);
         return files;
     }
     catch (error) {

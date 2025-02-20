@@ -1,1 +1,61 @@
 # test-cli
+
+一个简单的命令行工具，用于快速拉取指定项目目录下的组件文件。
+
+## 功能特点
+
+- 快速拉取指定项目目录下的组件文件
+- 支持指定分支
+- 支持指定目标目录
+- 简单易用的命令行界面
+
+## 安装
+
+```bash
+npm install -g test-cli
+```
+
+## 使用
+
+### 安装组件
+
+```bash
+test-cli install <gitUrl> <componentPath> [targetDir]
+```
+
+## 查看帮助
+
+```bash
+test-cli --help
+```
+
+## 开发
+
+```bash
+# 安装依赖
+npm install
+
+# 构建
+npm run build
+
+# 在本项目下执行
+npm link 
+
+# 在需要引入的项目下执行
+npm link test-cli
+```
+
+## 许可证
+
+MIT
+
+## 作者
+
+[作者名称]
+
+## 更新日志
+
+### v1.0.0
+
+- 初始版本发布
+- 基本功能实现
