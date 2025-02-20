@@ -1,5 +1,5 @@
 {
-  "name": "test-cli",
+  "name": "@lnnl/test-cli",
   "version": "1.0.0",
   "description": "CLI tool to download and install components from git repositories",
   "main": "dist/cli.js",
@@ -10,8 +10,27 @@
   "scripts": {
     "build": "tsc",
     "start": "node --experimental-modules dist/cli.js",
-    "debug": "node --inspect-brk dist/cli.js"
+    "debug": "node --inspect-brk dist/cli.js",
+    "prepublishOnly": "npm run build"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "cli",
+    "component",
+    "download",
+    "install"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lsw-lnnl/test-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lsw-lnnl/test-cli/issues"
+  },
+  "homepage": "https://github.com/lsw-lnnl/test-cli#readme",
   "dependencies": {
     "chalk": "^5.0.0",
     "commander": "^10.0.0",
