@@ -1,10 +1,10 @@
 {
-  "name": "@lnnl/test-cli",
+  "name": "@logol/dc-cli",
   "version": "1.0.0",
   "description": "CLI tool to download and install components from git repositories",
   "main": "dist/cli.js",
   "bin": {
-    "test-cli": "./dist/cli.js"
+    "@logol/dc-cli": "./dist/cli.js"
   },
   "type": "module",
   "scripts": {
@@ -23,14 +23,6 @@
     "download",
     "install"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lsw-lnnl/test-cli.git"
-  },
-  "bugs": {
-    "url": "https://github.com/lsw-lnnl/test-cli/issues"
-  },
-  "homepage": "https://github.com/lsw-lnnl/test-cli#readme",
   "dependencies": {
     "chalk": "^5.0.0",
     "commander": "^10.0.0",
@@ -41,5 +33,8 @@
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.7",
     "typescript": "^4.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

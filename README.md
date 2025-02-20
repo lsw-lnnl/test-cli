@@ -1,4 +1,4 @@
-# test-cli
+# @logol/dc-cli
 
 一个简单的命令行工具，用于快速拉取指定项目目录下的组件文件。
 
@@ -12,7 +12,7 @@
 ## 安装
 
 ```bash
-npm install -g test-cli
+npm install -g @logol/dc-cli
 ```
 
 ## 使用
@@ -20,13 +20,18 @@ npm install -g test-cli
 ### 安装组件
 
 ```bash
-test-cli install <gitUrl> <componentPath> [targetDir]
+@logol/dc-cli install <gitUrl> <componentPath> [targetDir]
+npx @logol/dc-cli install <gitUrl> <componentPath> [targetDir]
+
+# 指定分支
+@logol/dc-cli install <gitUrl> <componentPath> [targetDir] -b <branch>
+npx @logol/dc-cli install <gitUrl> <componentPath> [targetDir] -b <branch>
 ```
 
 ## 查看帮助
 
 ```bash
-test-cli --help
+@logol/dc-cli --help
 ```
 
 ## 开发
@@ -42,7 +47,7 @@ npm run build
 npm link 
 
 # 在需要引入的项目下执行
-npm link test-cli
+npm link @logol/dc-cli
 ```
 
 ## 许可证
