@@ -3,8 +3,8 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import os from 'node:os';
 import { packageJson } from './get-package.js';
+import chalk from 'chalk';
 export async function downloadComponent(gitUrl, componentPath, branch = 'master') {
-    // Create temp directory using package name
     const tempDir = path.join(os.tmpdir(), `${packageJson.name}-${Date.now()}`);
     await fs.ensureDir(tempDir);
     try {
@@ -14,9 +14,25 @@ export async function downloadComponent(gitUrl, componentPath, branch = 'master'
         // Get component files
         const componentDir = path.join(tempDir, componentPath);
         const files = await getComponentFiles(componentDir);
+        // 获取项目根目录的package.json
+        const packageJsonPath = path.join(tempDir, 'package.json');
+        let dependencies = {};
+        let devDependencies = {};
+        if (await fs.pathExists(packageJsonPath)) {
+            const pkgJson = await fs.readJson(packageJsonPath);
+            dependencies = pkgJson.dependencies || {};
+            devDependencies = pkgJson.devDependencies || {};
+        }
+        else {
+            console.log(chalk.yellow('Warning: No package.json found in project root'));
+        }
         // Cleanup
         await fs.remove(tempDir);
-        return files;
+        return {
+            files,
+            dependencies,
+            devDependencies
+        };
     }
     catch (error) {
         // Cleanup on error

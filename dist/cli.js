@@ -15,8 +15,8 @@ program
     .action(async (gitUrl, componentPath, targetDir = "./src/components", options) => {
     try {
         console.log(chalk.blue(`Downloading component from ${gitUrl} branch ${options.branch}...`));
-        // 下载组件文件
-        const files = await downloadComponent(gitUrl, componentPath, options.branch);
+        // 下载组件文件和依赖信息
+        const { files, dependencies, devDependencies } = await downloadComponent(gitUrl, componentPath, options.branch);
         // 截取组件目录最后一层目录名称
         const componentPathArr = componentPath.split("/");
         const lastComponentDirName = componentPathArr[componentPathArr.length - 1];
@@ -26,8 +26,9 @@ program
         if (lastComponentDirName !== lastTargetDirName) {
             targetDir = [...targetDirArr, lastComponentDirName].join("/");
         }
-        // 安装组件到目标目录
-        await installComponent(files, targetDir);
+        console.log(chalk.blue(`开始安装组件到目标目录`));
+        // 安装组件到目标目录，同时传入依赖信息
+        await installComponent(files, targetDir, dependencies, devDependencies);
         console.log(chalk.green("Component installed successfully!"));
     }
     catch (error) {
