@@ -26,10 +26,13 @@ program
         if (lastComponentDirName !== lastTargetDirName) {
             targetDir = [...targetDirArr, lastComponentDirName].join("/");
         }
-        console.log(chalk.blue(`开始安装组件到目标目录`));
+        console.log(chalk.blue(`Start installing component to target directory...`));
         // 安装组件到目标目录，同时传入依赖信息
-        await installComponent(files, targetDir, dependencies, devDependencies);
-        console.log(chalk.green("Component installed successfully!"));
+        const installed = await installComponent(files, targetDir, dependencies, devDependencies);
+        // 只在实际安装完成时显示成功提示
+        if (installed) {
+            console.log(chalk.green("Component installed successfully!"));
+        }
     }
     catch (error) {
         console.error(chalk.red("Error installing component:"), error);

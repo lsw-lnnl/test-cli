@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
+import inquirer from 'inquirer';
 // 解析导入语句的正则表达式
 const importRegex = /import\s+?(?:(?:(?:[\w*\s{},]*)\s+from\s+?)|)(?:(?:".*?")|(?:'.*?'))[\s]*?(?:;|$|)/g;
 const pathRegex = /["']([@\w\/-]+)["']/;
@@ -40,6 +41,10 @@ function extractDependencies(content) {
         !pkg.startsWith('.') && // 排除相对路径
         !pkg.startsWith('@types') // 排除类型定义包
     );
+}
+// 移除版本号前缀(^、~、>=等)
+function normalizeVersion(version) {
+    return version.replace(/^[\^~>=<]+/, '');
 }
 // 安装缺失的依赖
 async function installMissingDependencies(projectRoot, missingDeps) {
@@ -93,10 +98,14 @@ export async function installComponent(files, targetDir, dependencies = {}, devD
                     const version = dependencies[dep] || 'latest';
                     allDeps.set(dep, version);
                     // 检查版本差异
-                    if (existingDepsWithVersion[dep] && version !== 'latest' && existingDepsWithVersion[dep] !== version) {
-                        console.log(chalk.yellow(`Warning: Dependency version mismatch for '${dep}'\n` +
-                            `  Component requires: ${version}\n` +
-                            `  Project has: ${existingDepsWithVersion[dep]}`));
+                    if (existingDepsWithVersion[dep] && version !== 'latest') {
+                        const normalizedExisting = normalizeVersion(existingDepsWithVersion[dep]);
+                        const normalizedRequired = normalizeVersion(version);
+                        if (normalizedExisting !== normalizedRequired) {
+                            console.log(chalk.yellow(`Warning: Dependency version mismatch for '${dep}'\n` +
+                                `  Component requires: ${version}\n` +
+                                `  Project has: ${existingDepsWithVersion[dep]}`));
+                        }
                     }
                 }
             });
@@ -133,6 +142,21 @@ export async function installComponent(files, targetDir, dependencies = {}, devD
             throw error;
         }
     }
+    // 检查目标目录是否已存在
+    if (await fs.pathExists(targetDir)) {
+        const { confirm } = await inquirer.prompt([{
+                type: 'confirm',
+                name: 'confirm',
+                message: chalk.yellow(`Directory ${targetDir} already exists. Do you want to overwrite it?`),
+                default: false
+            }]);
+        if (!confirm) {
+            console.log(chalk.blue('Installation cancelled'));
+            return false;
+        }
+        // 如果用户确认覆盖，则删除原目录
+        await fs.remove(targetDir);
+    }
     // 确保目标目录存在
     await fs.ensureDir(targetDir);
     // 安装每个文件
@@ -144,4 +168,5 @@ export async function installComponent(files, targetDir, dependencies = {}, devD
         await fs.writeFile(targetPath, file.content);
         console.log(chalk.green(`Installed: ${targetPath}`));
     }
+    return true;
 }
